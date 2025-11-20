@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Kubernetes Pods and Services - IT Blog</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .article-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+        .article-header h1 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .article-body {
+            line-height: 1.8;
+        }
+        .article-body h2 {
+            color: #2d3748;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .article-body p {
+            margin-bottom: 1rem;
+        }
+        .article-body code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .article-body pre {
+            background: #2d3748;
+            color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .article-body pre code {
+            background: none;
+            padding: 0;
+            color: #f5f5f5;
+        }
+        .article-body ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 IT Blog</h1>
+            <p class="tagline">Software News & Configuration Guides</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Home</a>
+        
+        <article class="article-content">
+            <div class="article-header">
+                <h1>Introduction to Kubernetes Pods and Services</h1>
+                <div class="article-meta">
+                    <span>📅 January 5, 2024</span>
+                    <span>✍️ Tech Team</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <p>Kubernetes is the leading container orchestration platform. Understanding Pods and Services is fundamental to working with Kubernetes. This article will introduce you to these core concepts.</p>
+
+                <h2>What are Pods?</h2>
+                <p>A Pod is the smallest deployable unit in Kubernetes. It represents a single instance of a running process in your cluster and can contain one or more containers that share storage and network resources.</p>
+
+                <h2>Creating a Simple Pod</h2>
+                <p>Here's a basic Pod definition in YAML:</p>
+                <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80</code></pre>
+
+                <p>Create the Pod using kubectl:</p>
+                <pre><code>kubectl apply -f pod.yaml</code></pre>
+
+                <h2>Understanding Services</h2>
+                <p>Services in Kubernetes provide a stable endpoint for accessing Pods. Since Pods are ephemeral and can be created/destroyed dynamically, Services provide a consistent way to reach them.</p>
+
+                <h2>Types of Services</h2>
+                <ul>
+                    <li><strong>ClusterIP</strong> - Default type, exposes Service on an internal cluster IP</li>
+                    <li><strong>NodePort</strong> - Exposes Service on each Node's IP at a static port</li>
+                    <li><strong>LoadBalancer</strong> - Creates an external load balancer in supported cloud providers</li>
+                    <li><strong>ExternalName</strong> - Maps Service to a DNS name</li>
+                </ul>
+
+                <h2>Creating a Service</h2>
+                <p>Here's a Service definition that exposes our nginx Pod:</p>
+                <pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP</code></pre>
+
+                <h2>Pod and Service Communication</h2>
+                <p>Services use label selectors to determine which Pods to route traffic to. In our example, the Service selects all Pods with the label <code>app: nginx</code>.</p>
+
+                <h2>Viewing Resources</h2>
+                <p>Use these commands to inspect your Pods and Services:</p>
+                <pre><code>kubectl get pods
+kubectl get services
+kubectl describe pod nginx-pod
+kubectl describe service nginx-service</code></pre>
+
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use labels effectively to organize and select resources</li>
+                    <li>Define resource limits and requests for containers</li>
+                    <li>Use readiness and liveness probes for health checks</li>
+                    <li>Keep Pods focused on a single responsibility</li>
+                    <li>Use Deployments instead of bare Pods for production workloads</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>Pods and Services are foundational concepts in Kubernetes. Understanding how they work together enables you to build scalable, resilient applications. In future articles, we'll explore more advanced Kubernetes features.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 IT Blog. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
