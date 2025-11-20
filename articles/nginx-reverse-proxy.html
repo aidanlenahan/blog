@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuring Nginx as a Reverse Proxy - IT Blog</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .article-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+        .article-header h1 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .article-body {
+            line-height: 1.8;
+        }
+        .article-body h2 {
+            color: #2d3748;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .article-body p {
+            margin-bottom: 1rem;
+        }
+        .article-body code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .article-body pre {
+            background: #2d3748;
+            color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .article-body pre code {
+            background: none;
+            padding: 0;
+            color: #f5f5f5;
+        }
+        .article-body ul {
+            margin: 1rem 0 1rem 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 IT Blog</h1>
+            <p class="tagline">Software News & Configuration Guides</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Home</a>
+        
+        <article class="article-content">
+            <div class="article-header">
+                <h1>Configuring Nginx as a Reverse Proxy</h1>
+                <div class="article-meta">
+                    <span>📅 January 10, 2024</span>
+                    <span>✍️ Tech Team</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <p>Nginx is a powerful web server that can also function as a reverse proxy. In this guide, we'll show you how to configure Nginx as a reverse proxy to forward requests to backend servers.</p>
+
+                <h2>What is a Reverse Proxy?</h2>
+                <p>A reverse proxy sits between clients and backend servers, forwarding client requests to the appropriate server and returning the server's response to the client. This provides benefits like load balancing, SSL termination, and enhanced security.</p>
+
+                <h2>Basic Configuration</h2>
+                <p>Here's a basic Nginx reverse proxy configuration:</p>
+                <pre><code>server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}</code></pre>
+
+                <h2>SSL Configuration</h2>
+                <p>To enable HTTPS, add SSL configuration:</p>
+                <pre><code>server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}</code></pre>
+
+                <h2>Load Balancing</h2>
+                <p>Nginx can distribute traffic across multiple backend servers:</p>
+                <pre><code>upstream backend {
+    server backend1.example.com;
+    server backend2.example.com;
+    server backend3.example.com;
+}
+
+server {
+    listen 80;
+    
+    location / {
+        proxy_pass http://backend;
+    }
+}</code></pre>
+
+                <h2>Security Best Practices</h2>
+                <ul>
+                    <li>Always use HTTPS with valid SSL certificates</li>
+                    <li>Implement rate limiting to prevent abuse</li>
+                    <li>Hide Nginx version information</li>
+                    <li>Set appropriate headers for security</li>
+                    <li>Regularly update Nginx to the latest version</li>
+                </ul>
+
+                <h2>Testing Your Configuration</h2>
+                <p>Before reloading Nginx, always test your configuration:</p>
+                <pre><code>sudo nginx -t
+sudo systemctl reload nginx</code></pre>
+
+                <h2>Conclusion</h2>
+                <p>Configuring Nginx as a reverse proxy is a powerful way to manage your web applications. With proper configuration, you can improve performance, security, and scalability of your infrastructure.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 IT Blog. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

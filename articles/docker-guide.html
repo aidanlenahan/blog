@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with Docker - IT Blog</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .article-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #667eea;
+        }
+        .article-header h1 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .article-body {
+            line-height: 1.8;
+        }
+        .article-body h2 {
+            color: #2d3748;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .article-body p {
+            margin-bottom: 1rem;
+        }
+        .article-body code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .article-body pre {
+            background: #2d3748;
+            color: #f5f5f5;
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .article-body pre code {
+            background: none;
+            padding: 0;
+            color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 IT Blog</h1>
+            <p class="tagline">Software News & Configuration Guides</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="../index.html" class="back-link">← Back to Home</a>
+        
+        <article class="article-content">
+            <div class="article-header">
+                <h1>Getting Started with Docker: A Complete Guide</h1>
+                <div class="article-meta">
+                    <span>📅 January 15, 2024</span>
+                    <span>✍️ Tech Team</span>
+                </div>
+            </div>
+
+            <div class="article-body">
+                <p>Docker has revolutionized the way we develop, ship, and run applications. In this comprehensive guide, we'll walk you through everything you need to know to get started with Docker.</p>
+
+                <h2>What is Docker?</h2>
+                <p>Docker is a platform that enables developers to package applications into containers—standardized executable components combining application source code with the operating system (OS) libraries and dependencies required to run that code in any environment.</p>
+
+                <h2>Installing Docker</h2>
+                <p>To install Docker on Ubuntu/Debian systems, run the following commands:</p>
+                <pre><code>sudo apt-get update
+sudo apt-get install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker</code></pre>
+
+                <h2>Basic Docker Commands</h2>
+                <p>Here are some essential Docker commands to get you started:</p>
+                <ul>
+                    <li><code>docker pull [image]</code> - Download an image from Docker Hub</li>
+                    <li><code>docker run [image]</code> - Create and start a container</li>
+                    <li><code>docker ps</code> - List running containers</li>
+                    <li><code>docker stop [container]</code> - Stop a running container</li>
+                    <li><code>docker rm [container]</code> - Remove a container</li>
+                </ul>
+
+                <h2>Creating Your First Container</h2>
+                <p>Let's create a simple nginx web server container:</p>
+                <pre><code>docker run -d -p 8080:80 --name my-nginx nginx</code></pre>
+                <p>This command downloads the nginx image (if not already present), creates a container, and maps port 8080 on your host to port 80 in the container.</p>
+
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use official images from Docker Hub when possible</li>
+                    <li>Keep your images small by using multi-stage builds</li>
+                    <li>Don't run containers as root</li>
+                    <li>Use .dockerignore files to exclude unnecessary files</li>
+                    <li>Always tag your images with specific versions</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>Docker is a powerful tool that simplifies application deployment and management. With the basics covered in this guide, you're ready to start containerizing your applications. Happy containerizing!</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 IT Blog. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

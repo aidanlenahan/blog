@@ -1,0 +1,25 @@
+{
+    "articles": [
+        {
+            "title": "Getting Started with Docker: A Complete Guide",
+            "date": "2024-01-15",
+            "author": "Tech Team",
+            "excerpt": "Learn how to containerize your applications with Docker. This comprehensive guide covers installation, basic commands, and best practices for managing containers.",
+            "file": "docker-guide.html"
+        },
+        {
+            "title": "Configuring Nginx as a Reverse Proxy",
+            "date": "2024-01-10",
+            "author": "Tech Team",
+            "excerpt": "Step-by-step instructions for setting up Nginx as a reverse proxy server. Includes SSL configuration, load balancing, and security hardening tips.",
+            "file": "nginx-reverse-proxy.html"
+        },
+        {
+            "title": "Introduction to Kubernetes Pods and Services",
+            "date": "2024-01-05",
+            "author": "Tech Team",
+            "excerpt": "Understanding the basics of Kubernetes architecture. This article explains pods, services, and how they work together to orchestrate containerized applications.",
+            "file": "kubernetes-basics.html"
+        }
+    ]
+}
