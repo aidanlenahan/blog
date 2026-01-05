@@ -3,18 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Blog - Software News & Configs</title>
+    <title>Aidan Lenahan's IT Blog</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>🚀 IT Blog</h1>
+            <h1>Aidan Lenahan's IT Blog</h1>
             <p class="tagline">Software News & Configuration Guides</p>
+            <div class="social-links">
+                <a href="https://github.com/aidanlenahan" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    GitHub
+                </a>
+                <a href="https://linkedin.com/in/aidanlenahan" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    LinkedIn
+                </a>
+                <a href="https://aidanlenahan.com" target="_blank" rel="noopener noreferrer" class="social-btn">
+                    Website
+                </a>
+            </div>
         </div>
     </header>
 
     <main class="container">
+        <section class="search-section">
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="search-input" 
+                    placeholder="Search articles by title or description..." 
+                    aria-label="Search articles"
+                />
+                <span class="search-icon">🔍</span>
+            </div>
+            <div id="search-results-count" class="search-results-count"></div>
+        </section>
+
         <section class="articles-section">
             <h2>Latest Articles</h2>
             <div id="article-list" class="article-list">
@@ -25,7 +50,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 IT Blog. All rights reserved.</p>
+            <p>&copy; 2026 Aidan Lenahan's IT Blog.</p>
         </div>
     </footer>
 
