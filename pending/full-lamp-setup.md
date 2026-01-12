@@ -311,13 +311,5 @@ SHOW VARIABLES LIKE 'validate_password%';
 
 ---
 
-## Done
-
-You now have:
-
-* A working LAMP stack
-* phpMyAdmin installed
-* A fallback manual setup method
-* Proper MySQL user separation
-
-This setup is suitable for development, homelabs, and learning environments.
+## Sources
+[https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu)
