@@ -286,30 +286,199 @@ They are **completely separate accounts**.
 
 ---
 
+## Part 3 — Securing MySQL (Recommended)
+
+### 1. Run MySQL secure setup
+
+```bash
+sudo mysql_secure_installation
+```
+
+Recommended answers:
+
+* Enable VALIDATE PASSWORD component: Yes
+* Password policy: STRONG
+* Set root password: No (keep socket authentication)
+* Remove anonymous users: Yes
+* Disallow remote root login: Yes
+* Remove test database: Yes
+* Reload privilege tables: Yes
+
+> Keeping MySQL root on socket authentication is more secure than password-based login and prevents remote brute-force attacks.
+
+---
+
+### 2. Verify root authentication method
+
+```bash
+sudo mysql
+```
+
+```sql
+SELECT user, host, plugin FROM mysql.user WHERE user='root';
+```
+
+Expected result:
+
+```
+root | localhost | auth_socket
+```
+
+---
+
+### 3. Ensure MySQL is not exposed remotely
+
+Edit MySQL config:
+
+```bash
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+```
+
+Ensure:
+
+```
+bind-address = 127.0.0.1
+```
+
+Restart MySQL:
+
+```bash
+sudo systemctl restart mysql
+```
+
+---
+
+## Part 4 — Securing phpMyAdmin (REQUIRED if Public)
+
+> If phpMyAdmin is accessible on a school network or the public internet, this section is not optional.
+
+---
+
+### 1. Never use MySQL root in phpMyAdmin
+
+* MySQL root uses socket authentication
+* phpMyAdmin requires password authentication
+* Root login in phpMyAdmin is blocked by design and should remain blocked
+
+You must use a **dedicated MySQL user** with a strong password.
+
+---
+
+### 2. Create a dedicated phpMyAdmin user
+
+```bash
+sudo mysql
+```
+
+```sql
+CREATE USER 'school_admin'@'localhost'
+IDENTIFIED WITH mysql_native_password
+BY 'VeryStr0ng!Password123';
+
+GRANT ALL PRIVILEGES ON *.* TO 'school_admin'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+(Privileges can be reduced later once everything works.)
+
+---
+
+### 3. Add HTTP authentication (second security layer)
+
+Install tools:
+
+```bash
+sudo apt install apache2-utils -y
+```
+
+Create password file:
+
+```bash
+sudo htpasswd -c /etc/apache2/.pma_passwd adminuser
+```
+
+---
+
+### 4. Protect phpMyAdmin with Apache auth
+
+Edit:
+
+```bash
+sudo nano /etc/apache2/conf-available/phpmyadmin.conf
+```
+
+Inside the `<Directory /usr/share/phpmyadmin>` block, add:
+
+```apache
+AuthType Basic
+AuthName "Restricted phpMyAdmin"
+AuthUserFile /etc/apache2/.pma_passwd
+Require valid-user
+```
+
+Enable and reload:
+
+```bash
+sudo a2enconf phpmyadmin
+sudo systemctl reload apache2
+```
+
+This enforces:
+
+1. HTTP authentication
+2. MySQL authentication
+
+---
+
+### 5. Disable root login and passwordless login in phpMyAdmin
+
+Edit:
+
+```bash
+sudo nano /etc/phpmyadmin/config.inc.php
+```
+
+Ensure:
+
+```php
+$cfg['AllowNoPassword'] = false;
+$cfg['Servers'][$i]['AllowRoot'] = false;
+```
+
+---
+
+### 6. Optional: Obscure phpMyAdmin URL
+
+```bash
+sudo mv /usr/share/phpmyadmin /usr/share/pma-secure
+sudo ln -s /usr/share/pma-secure /var/www/html/internal-db
+```
+
+Access via:
+
+```
+http://yourserver/internal-db
+```
+
+---
+
+## Security Notes (Read Carefully)
+
+* MySQL root **does not** share a password with phpMyAdmin users
+* phpMyAdmin root login being blocked is expected and correct
+* phpMyAdmin is a frequent attack target — never expose it without protection
+* For school environments, prefer IP restrictions or VPN access
+
+---
+
 ## Recommended Best Practice
 
-* Keep MySQL root using socket auth
-* Create separate users per project
-* Do not expose phpMyAdmin publicly
-* Restrict phpMyAdmin to localhost if possible
+* Keep MySQL root on socket authentication
+* Use strong, unique passwords for all MySQL users
+* Use least-privilege database access
+* Add HTTP auth in front of phpMyAdmin
+* Use HTTPS if accessible beyond localhost
+* Do not expose phpMyAdmin unnecessarily
 
 ---
-
-## Troubleshooting Commands
-
-Check users and auth plugins:
-
-```sql
-SELECT user, host, plugin FROM mysql.user;
-```
-
-Check password policy:
-
-```sql
-SHOW VARIABLES LIKE 'validate_password%';
-```
-
----
-
-## Sources
-[https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu)
