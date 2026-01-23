@@ -13,6 +13,7 @@ This guide covers how to set up Cloudflare Access with Cloudflared, create appli
 curl -LO https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
 sudo dpkg -i cloudflared-linux-amd64.deb
 ````
+If the URL above has changed, click [here](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/).
 
 2. **Authenticate the tunnel**:
 
