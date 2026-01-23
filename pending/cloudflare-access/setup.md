@@ -12,7 +12,7 @@ This guide covers how to set up Cloudflare Access with Cloudflared, create appli
 # Download and install the package
 curl -LO https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
 sudo dpkg -i cloudflared-linux-amd64.deb
-```
+````
 
 2. **Authenticate the tunnel**:
 
@@ -196,3 +196,22 @@ Use the **Policy Tester** in Cloudflare Access to confirm:
 * Require rules define **what conditions must be satisfied for access**
 * Test policies thoroughly using the **Policy Tester**
 * All new applications can reuse these policies by selecting them in the **Access Policies** tab
+
+---
+
+## 6. Methods to End Access Sessions
+
+1. **Revoke User/Session (Admin)**:
+   Go to **Team & Resources → Users**, select the user, click **Revoke → Revoke sessions**.
+
+2. **App-Specific Revocation (Admin)**:
+   Go to **Access → Applications**, select the application, and click **Revoke existing tokens**.
+
+3. **User Logout Link**:
+   Users can navigate to:
+
+```
+https://<your-team-name>.cloudflareaccess.com/cdn-cgi/access/logout
+```
+
+This clears their session and requires re-authentication.
